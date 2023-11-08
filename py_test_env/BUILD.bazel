@@ -1,0 +1,39 @@
+cc_library(
+    name = "_one",
+    srcs = [
+        "one.cc",
+        "one.h",
+    ],
+)
+
+cc_shared_library(
+    name = "one",
+    deps = [":_one"],
+)
+
+py_test(
+    name = "with_path",
+    srcs = ["test_dlopen.py"],
+    data = [":one"],
+    env = {
+        "LD_LIBRARY_PATH": "./py_test_env",
+    },
+    main = ":test_dlopen.py",
+)
+
+py_test(
+    name = "no_path",
+    srcs = ["test_dlopen.py"],
+    data = [":one"],
+    main = ":test_dlopen.py",
+)
+
+py_test(
+    name = "location",
+    srcs = ["test_dlopen.py"],
+    data = [":one"],
+    env = {
+        "LD_LIBRARY_PATH": "$$(dirname $(location :one))",
+    },
+    main = ":test_dlopen.py",
+)
