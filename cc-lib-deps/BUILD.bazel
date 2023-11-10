@@ -1,0 +1,58 @@
+cc_library(
+    name = "one",
+    srcs = ["one.cc", "one.h"],
+    linkstatic = False,
+)
+
+cc_shared_library(
+    name = "onesl",
+    deps = [":one"],
+)
+
+cc_library(
+    name = "two",
+    srcs = ["two.cc", "two.h"],
+    deps = [":one"],
+    linkstatic = False,
+)
+
+cc_shared_library(
+    name = "twosl",
+    deps = [":two"],
+    dynamic_deps = [":onesl"],
+)
+
+cc_test(
+    name = "two_test",
+    srcs = ["two_test.cc"],
+    deps = [":two"],
+    linkstatic = False,
+)
+
+cc_test(
+    name = "two_test_dyn",
+    srcs = ["two_test.cc"],
+    deps = [":two"],
+    dynamic_deps = [":twosl"],
+    linkstatic = False,
+)
+
+cc_library(
+    name = "three",
+    srcs = ["three.cc", "three.h"],
+    deps = [":two"],
+    linkstatic = False,
+)
+
+cc_shared_library(
+    name = "threesl",
+    deps = [":three"],
+    dynamic_deps = [":twosl"],
+)
+
+cc_test(
+    name = "three_test",
+    srcs = ["three_test.cc"],
+    deps = [":three"],
+    linkstatic = False,
+)
