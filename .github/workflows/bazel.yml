@@ -1,8 +1,14 @@
-on: [push]
+on: [push, workflow_dispatch]
+
 jobs:
   build_and_test_ubuntu:
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        version:
+          - ""
+          - "latest"
+          - "last_rc"
     steps:
     - uses: actions/checkout@v3
 
@@ -14,4 +20,4 @@ jobs:
 
     - name: Bazel Test
       run: |
-        bazel test //...
+        USE_BAZEL_VERSION=${{matrix.version}} bazel test ...
