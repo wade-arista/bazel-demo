@@ -1,1 +1,7 @@
+bazel_dep(name = "generator")
+local_path_override(
+    module_name = "generator",
+    path = "./generator",
+)
+
 register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")

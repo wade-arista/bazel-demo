@@ -1,1 +1,3 @@
 test --test_output=errors
+common --enable_bzlmod
+common --experimental_cc_shared_library
