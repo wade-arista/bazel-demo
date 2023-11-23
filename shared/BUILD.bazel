@@ -1,3 +1,5 @@
+load(":macros.bzl", "assert_linking_test")
+
 cc_library(
     name = "three_lib",
     srcs = ["three.cpp"],
@@ -17,6 +19,15 @@ cc_shared_library(
     ],
     shared_lib_name = "libthree.so",
     deps = [":three_lib"],
+)
+
+assert_linking_test(
+    name = "check_libthree_so",
+    lib_root_name = "three",
+    require = [
+        "libone.so",
+        "libtwo.so",
+    ],
 )
 
 # Expected to pass
