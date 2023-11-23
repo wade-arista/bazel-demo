@@ -22,12 +22,31 @@ cc_shared_library(
 )
 
 assert_linking_test(
-    name = "check_libthree_so",
+    name = "check_libthree_linking",
     lib_root_name = "three",
     require = [
         "libone.so",
         "libtwo.so",
     ],
+)
+
+py_test(
+    name = "check_libthree_dynsyms",
+    srcs = ["check_symtab.py"],
+    args = [
+        "--sut",
+        "libthree.so",
+        "--undefined",
+        "_Z3onev",
+        "--undefined",
+        "_Z3twov",
+        "--defined",
+        "_Z5threev",
+        "--",
+        "$(locations :three_so)",
+    ],
+    data = [":three_so"],
+    main = "check_symtab.py",
 )
 
 # Expected to pass
