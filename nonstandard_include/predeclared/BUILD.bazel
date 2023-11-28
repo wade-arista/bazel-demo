@@ -5,7 +5,7 @@ codegen(
     name = "hello_src",
     out = [
         "hello.cc",
-        "hello.inc",
+        "hello.noth",
     ],
     cc = ["//nonstandard_include:hello.in"],
     txt = "hello, world!",

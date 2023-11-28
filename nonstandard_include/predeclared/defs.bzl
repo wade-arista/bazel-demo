@@ -13,7 +13,7 @@ def _codegen_impl(ctx):
     inc_list = [
         f
         for f in ctx.outputs.out
-        if paths.split_extension(f.basename)[1] in [".inc", ".h"]
+        if paths.split_extension(f.basename)[1] in [".noth", ".h"]
     ]
     for cc in ctx.files.cc:
         out = cc_map[paths.split_extension(cc.basename)[0]]

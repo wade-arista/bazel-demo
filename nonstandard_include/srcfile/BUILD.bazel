@@ -3,7 +3,7 @@ load("//nonstandard_include:helper.bzl", "assert_hello_test")
 
 codegen(
     name = "hello_src",
-    src = "hello.inc",
+    src = "hello.noth",
     cc = ["//nonstandard_include:hello.in"],
 )
 

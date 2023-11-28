@@ -16,7 +16,7 @@ def _codegen_impl(ctx):
             arguments = ["-v", cc.path, out.path],
         )
 
-        inc_out = ctx.actions.declare_file(paths.split_extension(cc.basename)[0] + ".inc")
+        inc_out = ctx.actions.declare_file(paths.split_extension(cc.basename)[0] + ".noth")
         outs.append(inc_out)
         ctx.actions.symlink(output = inc_out, target_file = ctx.files.src[0])
 
