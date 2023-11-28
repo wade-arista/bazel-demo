@@ -1,0 +1,24 @@
+load(":defs.bzl", "codegen")
+load("//nonstandard_include:helper.bzl", "assert_hello_test")
+
+codegen(
+    name = "hello_src",
+    src = "hello.inc",
+    cc = ["//nonstandard_include:hello.in"],
+)
+
+cc_library(
+    name = "hello_lib",
+    srcs = ["hello_src"],
+)
+
+cc_binary(
+    name = "hello",
+    srcs = ["hello_lib"],
+)
+
+assert_hello_test(
+    name = "hello_test",
+    msg = "hello, world!",
+    sut = "hello",
+)

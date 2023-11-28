@@ -1,0 +1,11 @@
+#include "hello.inc"
+
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char **argv) {
+   cout << greeting << endl;
+   return 0;
+}
+
