@@ -20,4 +20,6 @@ jobs:
 
     - name: Bazel Test
       run: |
-        USE_BAZEL_VERSION=${{matrix.version}} bazel test ...
+        export USE_BAZEL_VERSION=${{matrix.version}} 
+        bazel version
+        bazel test ...
