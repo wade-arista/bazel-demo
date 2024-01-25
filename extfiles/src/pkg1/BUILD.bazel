@@ -1,0 +1,8 @@
+## pkg1
+
+sh_test(
+    name = "test",
+    srcs = ["test.sh"],
+    args = ["$(location @externals//:test_input)"],
+    data = ["@externals//:test_input"],
+)
