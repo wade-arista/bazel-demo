@@ -7,7 +7,8 @@ def _input_importer_impl(repository_ctx):
     print("importing from", dirname)
     repository_ctx.symlink(dirname, "root")
     srcRoot = repository_ctx.os.environ["SRC_ROOT"]
-    repository_ctx.file("BUILD", content = repository_ctx.read(srcRoot + "/BUILD.bazel"))
+    buildFile = srcRoot + "/BUILD.bazel"
+    repository_ctx.symlink(buildFile, "BUILD.bazel")
 
 input_importer = repository_rule(
     implementation = _input_importer_impl,

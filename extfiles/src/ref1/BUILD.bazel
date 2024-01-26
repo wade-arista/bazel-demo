@@ -1,7 +1,4 @@
-genrule(
-    name = "gen_test_input",
-    srcs = ["root/input.txt"],
-    outs = ["test_input"],
-    cmd = "cat $< > $@",
+exports_files(
+    srcs = ["root/sub1/input.txt"],
     visibility = ["//visibility:public"],
 )

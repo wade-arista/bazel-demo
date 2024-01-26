@@ -3,6 +3,6 @@
 sh_test(
     name = "test",
     srcs = ["test.sh"],
-    args = ["$(location @externals//:test_input)"],
-    data = ["@externals//:test_input"],
+    args = ["$(location @externals//:root/sub1/input.txt)"],
+    data = ["@externals//:root/sub1/input.txt"],
 )
