@@ -1,0 +1,7 @@
+genrule(
+    name = "gen_test_input",
+    srcs = ["root/input.txt"],
+    outs = ["test_input"],
+    cmd = "cat $< > $@",
+    visibility = ["//visibility:public"],
+)
