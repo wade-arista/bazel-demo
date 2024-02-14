@@ -1,0 +1,19 @@
+load("@rules_python//python:defs.bzl", "py_test")
+
+py_test(
+    name = "basic",
+    srcs = ["basic.py"],
+    imports = [".."],
+    deps = ["//pkg1/pkg1"],
+)
+
+py_test(
+    name = "basic_pytest",
+    srcs = ["basic_pytest.py"],
+    imports = [".."],
+    legacy_create_init = False,  # required for pytest.main()
+    deps = [
+        "//pkg1/pkg1",
+        "@pip//pytest:pkg",
+    ],
+)

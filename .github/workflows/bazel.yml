@@ -9,6 +9,9 @@ jobs:
           - ""
           - "latest"
           - "last_rc"
+        root:
+          - .
+          - mod_pytest
     steps:
     - uses: actions/checkout@v3
 
@@ -20,6 +23,8 @@ jobs:
 
     - name: Bazel Test
       run: |
-        export USE_BAZEL_VERSION=${{matrix.version}} 
+        USE_BAZEL_VERSION=${{matrix.version}}
+        export USE_BAZEL_VERSION
         bazel version
-        bazel test ...
+        cd "${{matrix.root}}"
+        bazel test --test_output=errors ...
