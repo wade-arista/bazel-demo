@@ -5,13 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        root:
+          - .
+          - mod_pytest
         version:
           - ""
           - "latest"
           - "last_rc"
-        root:
-          - .
-          - mod_pytest
     steps:
     - uses: actions/checkout@v3
 
