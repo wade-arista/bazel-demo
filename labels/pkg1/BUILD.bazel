@@ -1,0 +1,23 @@
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("//labels/helper:helper.bzl", "mytest")
+
+[
+    py_library(
+        name = i,
+        srcs = [i + ".py"],
+        imports = ["."],
+        visibility = ["//visibility:public"],
+    )
+    for i in ("lib", "lib_extra")
+]
+
+mytest(
+    name = "lib_test",
+    srcs = ["lib_test.py"],
+    deps = ["lib"],
+)
+
+exports_files(
+    ["lib_test.py"],
+    visibility = ["//visibility:public"],
+)

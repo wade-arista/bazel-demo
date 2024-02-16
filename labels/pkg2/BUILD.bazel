@@ -1,0 +1,8 @@
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("//labels/helper:helper.bzl", "mytest")
+
+mytest(
+    name = "lib_test",
+    srcs = ["//labels/pkg1:lib_test.py"],
+    deps = ["//labels/pkg1:lib"],
+)
