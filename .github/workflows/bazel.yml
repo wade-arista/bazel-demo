@@ -12,6 +12,7 @@ jobs:
           - ""
           - "latest"
           - "last_rc"
+          - "last_green"
     steps:
     - uses: actions/checkout@v3
 
