@@ -10,7 +10,8 @@ jobs:
           - .
           - mod_pytest
         version:
-          - ""
+          - "6.x"
+          - "7.x"
           - "latest"
           - "last_rc"
           - "last_green"
