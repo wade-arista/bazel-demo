@@ -1,4 +1,8 @@
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "1 2 * * 1" # weekly on Mondays
 
 jobs:
   build_and_test_ubuntu:
