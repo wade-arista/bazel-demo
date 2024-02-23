@@ -1,3 +1,1 @@
-common --lockfile_mode=off
-common --enable_bzlmod
-test --test_output=errors
+../.bazelrc
