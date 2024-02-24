@@ -13,6 +13,7 @@ jobs:
         root:
           - .
           - mod_pytest
+          - repo_rule_import
         version:
           - "6.x"
           - "7.x"
