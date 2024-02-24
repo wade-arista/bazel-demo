@@ -1,0 +1,41 @@
+genrule(
+    name = "genfiles",
+    srcs = ["files.txt"],
+    outs = [
+        "a.txt",
+        "b.txt",
+    ],
+    cmd = 'for fn in $(OUTS); do cp -v $< "$$fn"; done',
+)
+
+filegroup(
+    name = "direct",
+    srcs = [
+        "a.txt",
+        "b.txt",
+    ],
+)
+
+filegroup(
+    name = "glob",
+    srcs = glob([
+        "a.txt",
+        "b.txt",
+    ]),
+)
+
+[sh_test(
+    name = "test_" + name,
+    srcs = ["test.sh"],
+    args = [
+        "$(location files.txt)",
+        "$(locations " + data + ")",
+    ],
+    data = [
+        data,
+        "files.txt",
+    ],
+) for name, data in [
+    ("direct", ":direct"),
+    ("glob", ":glob"),
+]]
