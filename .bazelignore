@@ -1,3 +1,4 @@
 .git
 extfiles
 mod_pytest
+repo_rule_import

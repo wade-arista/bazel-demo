@@ -1,0 +1,33 @@
+py_library(
+    name = "ext_py",
+    srcs = [":external_extract"],
+    imports = ["external/py"],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "ext_py_direct",
+    imports = ["external/py"],
+    srcs = [
+        "external/py/foo/__init__.py",
+        "external/py/bar/__init__.py",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "ext_py_glob",
+    imports = ["external/py"],
+    srcs = glob([
+        "external/py/foo/__init__.py",
+        "external/py/bar/__init__.py",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+# cc_library(
+#     name = "ext_headers_glob",
+#     hdrs = glob([
+#         "usr/include/Foo/Foo.h",
+#     ], allow_empty = False),
+# )
