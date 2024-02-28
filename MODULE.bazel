@@ -1,5 +1,10 @@
 bazel_dep(name = "rules_python", version = "0.31.0")
-bazel_dep(name = "aspect_rules_py", version = "0.5.0")
+bazel_dep(name = "aspect_rules_py")
+git_override(
+    module_name = "aspect_rules_py",
+    commit = "4bc94fcaede7867d8ff18f041a19ff0e35768f7c",
+    remote = "https://github.com/wade-arista/rules_py",
+)
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(

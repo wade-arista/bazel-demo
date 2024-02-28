@@ -1,3 +1,4 @@
 test --test_output=errors
 common --lockfile_mode=off
 common --enable_bzlmod
+common --@aspect_rules_py//py:interpreter_version=3.11.7
