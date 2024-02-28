@@ -12,7 +12,6 @@ jobs:
       matrix:
         root:
           - .
-          - mod_pytest
         version:
           - "6.x"
           - "7.x"

@@ -1,9 +1,11 @@
-bazel_dep(name = "generator")
-local_path_override(
-    module_name = "generator",
-    path = "./generator",
+bazel_dep(name = "rules_python", version = "0.31.0")
+bazel_dep(name = "aspect_rules_py", version = "0.5.0")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    is_default = True,
+    python_version = "3.11",
 )
 
-register_toolchains("@bazel_tools//tools/python:autodetecting_toolchain")
-
-bazel_dep(name = "aspect_rules_py", version = "0.5.0")
+importer = use_extension("//rules_py_reporule/rules:import.bzl", "importer")
+use_repo(importer, "myrepo")
