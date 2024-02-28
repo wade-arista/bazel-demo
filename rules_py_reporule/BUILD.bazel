@@ -1,0 +1,22 @@
+load("@aspect_rules_py//py:defs.bzl", "py_test")
+
+py_test(
+    name = "test",
+    srcs = ["test.py"],
+    deps = [
+        "//rules_py_reporule/direct/baz",
+        "@myrepo//:foo",
+        "@myrepo//bar",
+    ],
+)
+
+py_test(
+    name = "all_direct",
+    srcs = ["test.py"],
+    main = "test.py",
+    deps = [
+        "//rules_py_reporule/direct/baz",
+        "//rules_py_reporule/imported:foo",
+        "//rules_py_reporule/imported/bar",
+    ],
+)
