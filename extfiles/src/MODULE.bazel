@@ -1,4 +1,0 @@
-module(name = "extfiles")
-
-binder = use_extension("//rules:import.bzl", "binder")
-use_repo(binder, "externals")
