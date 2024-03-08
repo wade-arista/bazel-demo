@@ -1,0 +1,14 @@
+load("@aspect_rules_py//py:defs.bzl", "py_test")
+load("@rules_python//python:defs.bzl", rules_python_py_test = "py_test")
+
+py_test(
+    name = "src_test",
+    srcs = ["src.py"],
+    main = "src.py",
+)
+
+rules_python_py_test(
+    name = "src_test_rules_python",
+    srcs = ["src.py"],
+    main = "src.py",
+)

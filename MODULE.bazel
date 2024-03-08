@@ -2,3 +2,24 @@ module(
     name = "bazel_demo",
     version = "0.0.0",
 )
+
+bazel_dep(name = "aspect_rules_py")  #, version = "0.7.1")
+git_override(
+    module_name = "aspect_rules_py",
+    commit = "6962d6af35949bf62b9f62025ffddbee12beb7af",
+    remote = "https://github.com/aspect-build/rules_py",
+)
+
+bazel_dep(name = "rules_python", version = "0.31.0")
+bazel_dep(name = "rules_rust", version = "0.40.0")
+
+register_toolchains("//toolchain:default")
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(edition = "2021")
+use_repo(
+    rust,
+    "rust_toolchains",
+)
+
+register_toolchains("@rust_toolchains//:all")

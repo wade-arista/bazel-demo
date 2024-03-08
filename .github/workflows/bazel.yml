@@ -7,11 +7,8 @@ jobs:
       matrix:
         root:
           - .
-          - mod_pytest
         version:
-          - ""
-          - "latest"
-          - "last_rc"
+          - "7.x"
     steps:
     - uses: actions/checkout@v3
 
