@@ -1,0 +1,51 @@
+load("@rules_python//python:defs.bzl", "py_library", "py_runtime_pair")
+load(":splitfiles.bzl", "all_filenames", "create_python_package_filegroups")
+
+create_python_package_filegroups()
+
+filegroup(
+    name = "interpreter",
+    srcs = ["python/bin/python3"],
+    visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "py_lib_with_srcs",
+    srcs = ["python_package_py"],
+)
+
+py_library(
+    name = "py_lib_with_data",
+    data = ["python_package_py"],
+)
+
+[(
+    py_runtime(
+        name = "py_runtime_" + pylib,
+        files = [
+            pylib,
+            "python_package_misc_files",
+            "python_package_sharedlibs",
+        ],
+        interpreter = ":interpreter",
+        python_version = "PY3",
+        visibility = ["//visibility:public"],
+    ),
+    py_runtime_pair(
+        name = "py_runtime_pair_" + pylib,
+        py3_runtime = ":py_runtime_" + pylib,
+        visibility = ["//visibility:public"],
+    ),
+    toolchain(
+        name = "toolchain_" + pylib,
+        toolchain = "py_runtime_pair_" + pylib,
+        toolchain_type = "@bazel_tools//tools/python:toolchain_type",
+    ),
+) for pylib in ("py_lib_with_data", "py_lib_with_srcs")]
+
+genrule(
+    name = "extract_python_archive",
+    srcs = ["python.tar.gz"],
+    outs = all_filenames,
+    cmd = "tar -C $(RULEDIR) -x -f $<",
+)

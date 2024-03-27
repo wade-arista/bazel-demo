@@ -2,3 +2,16 @@ module(
     name = "bazel_demo",
     version = "0.0.0",
 )
+
+bazel_dep(name = "aspect_rules_py", version = "0.7.1")
+
+bazel_dep(name = "rules_python", version = "0.29.0", dev_dependency = True)
+
+importer = use_extension("//rules:py.bzl", "importer")
+importer.python()
+use_repo(importer, "py")
+
+register_toolchains(
+    "@py//:toolchain_py_lib_with_data",
+    "@py//:toolchain_py_lib_with_srcs",
+)
