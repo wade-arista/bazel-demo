@@ -1,0 +1,29 @@
+load("@rules_python//python:defs.bzl", "py_runtime_pair")
+load(":files.bzl", "filenames")
+
+filegroup(
+    name = "interpreter",
+    srcs = ["python/bin/python3"],
+    visibility = ["//visibility:public"],
+)
+
+py_runtime(
+    name = "py_runtime",
+    files = [":files"],
+    interpreter = ":interpreter",
+    python_version = "PY3",
+    visibility = ["//visibility:public"],
+)
+
+py_runtime_pair(
+    name = "py_runtime_pair",
+    py3_runtime = ":py_runtime",
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "files",
+    srcs = ["python.tar.gz"],
+    outs = filenames,
+    cmd = "tar -C $(RULEDIR) -x -f $<",
+)
