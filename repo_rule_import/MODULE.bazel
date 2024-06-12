@@ -1,0 +1,7 @@
+importer = use_extension("//rules:ext.bzl", "importer")
+importer.ext(
+    name = "extfiles",
+    build_file = "BUILD.bazel.external",
+    root = "external",
+)
+use_repo(importer, "extfiles")
