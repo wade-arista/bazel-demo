@@ -1,0 +1,10 @@
+genrule(
+    name = "test_sh",
+    outs = ["test.sh"],
+    cmd = "touch $@",
+)
+
+sh_test(
+    name = "test",
+    srcs = ["test.sh"],
+)

@@ -1,4 +1,0 @@
-exports_files(
-    srcs = ["root/sub1/input.txt"],
-    visibility = ["//visibility:public"],
-)
