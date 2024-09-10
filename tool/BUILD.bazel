@@ -1,0 +1,22 @@
+load("defs.bzl", "my_tool_toolchain")
+
+toolchain_type(name = "toolchain_type")
+
+cc_binary(
+    name = "tool_impl",
+    srcs = ["tool_impl.cpp"],
+)
+
+my_tool_toolchain(
+    name = "default_toolchain",
+    compiler = "tool_impl",
+    plugins = [
+        "//sharedlib:compilerplugin",
+    ],
+)
+
+toolchain(
+    name = "default",
+    toolchain = "default_toolchain",
+    toolchain_type = "toolchain_type",
+)

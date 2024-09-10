@@ -13,7 +13,6 @@ jobs:
         root:
           - .
         version:
-          - "6.x"
           - "7.x"
           - "latest"
           - "last_rc"

@@ -1,0 +1,12 @@
+cc_library(
+    name = "compiler_plugin_lib",
+    srcs = ["compiler_plugin.cpp"],
+    linkstatic = True,
+)
+
+cc_shared_library(
+    name = "compilerplugin",
+    shared_lib_name = "compilerplugin.so",
+    visibility = ["//visibility:public"],
+    deps = ["compiler_plugin_lib"],
+)

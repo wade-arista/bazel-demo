@@ -1,1 +1,7 @@
-
+test --test_output=errors
+common --incompatible_strict_action_env
+common --lockfile_mode=off
+common --enable_bzlmod
+common --experimental_cc_shared_library
+common --action_env=CCACHE_DISABLE=1
+common --host_action_env=CCACHE_DISABLE=1

@@ -1,0 +1,21 @@
+load("//tool:defs.bzl", "my_tool")
+
+my_tool(
+    name = "use_toolchain",
+    srcs = [
+        "foo.txt",
+    ],
+)
+
+sh_test(
+    name = "use_toolchain_test",
+    srcs = ["use_toolchain_test.sh"],
+    args = ["$(location use_toolchain)"],
+    data = ["use_toolchain"],
+    env = {
+        "EXPECTED": "\n".join([
+            "my input",
+            "plugin says: 1",
+        ]),
+    },
+)
