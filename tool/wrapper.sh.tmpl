@@ -30,7 +30,7 @@ do
    path=$(rlocation "$p")
    if [ -n "$path" ]
    then
-      _add "$path"
+      _add "$(dirname "$path")"
    fi
 done
 _add "$orig"

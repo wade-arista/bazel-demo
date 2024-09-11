@@ -37,7 +37,7 @@ def _tool_wrapper_impl(ctx):
 
         for path in file_paths:
             if path.endswith(".so") or ".so." in path:
-                dirs[paths.dirname(path)] = True
+                dirs.setdefault(paths.dirname(path), []).append(path)
 
     exec_dep_files, exec_path = _resolve_dep_paths(ctx, ctx.attr.executable)
     transitive_runfiles.append(exec_dep_files)
@@ -47,7 +47,7 @@ def _tool_wrapper_impl(ctx):
         output = ctx.outputs.out,
         substitutions = {
             "@@run@@": exec_path[0],
-            "@@ldpaths@@": shell.array_literal(list(dirs)),
+            "@@ldpaths@@": shell.array_literal([k[0] for k in dirs.values()]),
         },
         is_executable = True,
     )
