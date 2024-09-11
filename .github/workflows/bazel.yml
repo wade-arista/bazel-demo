@@ -31,6 +31,6 @@ jobs:
       run: |
         USE_BAZEL_VERSION=${{matrix.version}}
         export USE_BAZEL_VERSION
-        bazel version
+        bazel --version
         cd "${{matrix.root}}"
-        bazel test --announce_rc --test_output=errors ...
+        bazel --batch test --announce_rc --test_output=errors ...
