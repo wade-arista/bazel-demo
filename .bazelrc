@@ -1,1 +1,3 @@
 common --lockfile_mode=off
+
+test --announce_rc

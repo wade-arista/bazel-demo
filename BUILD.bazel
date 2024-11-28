@@ -1,10 +1,26 @@
+v = """
+#!/bin/bash
+set -uxeo pipefail
+mkdir -p /tmp/target
+mount -t tmpfs none /tmp/target
+findmnt /tmp/target
+"""
+
 genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+    name = "create_script",
+    srcs = [],
+    outs = ["mount_tmpfs.sh"],
+    cmd = "echo \"{}\" > $@".format(v),
+    executable = True,
 )
 
 sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+    name = "mount_tmpfs_fakeroot",
+    srcs = ["mount_tmpfs.sh"],
+    tags = ["requires-fakeroot"],
+)
+
+sh_test(
+    name = "mount_tmpfs_without_fakeroot",
+    srcs = ["mount_tmpfs.sh"],
 )
