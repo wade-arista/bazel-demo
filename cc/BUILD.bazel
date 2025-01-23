@@ -1,0 +1,25 @@
+cc_test(
+    name = "cc_test",
+    srcs = [
+        "test.cpp",
+    ],
+    deps = [
+        "//foo:foo_cc_library_imported",
+        "@rules_python//python/cc:current_py_cc_headers",
+        "@rules_python//python/cc:current_py_cc_libs",
+    ],
+)
+
+cc_test(
+    name = "cc_import_test",
+    srcs = [
+        "test.cpp",
+    ],
+    deps = [
+        "//foo:foo_cc_import",
+        "@rules_python//python/cc:current_py_cc_headers",
+        "@rules_python//python/cc:current_py_cc_libs",
+    ],
+)
+
+test_suite(name = "cc")

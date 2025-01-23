@@ -1,0 +1,60 @@
+load("//py:defs.bzl", "py_library", "py_test")
+
+cc_library(
+    name = "libecho",
+    srcs = ["echo.cpp"],
+    hdrs = ["echo.h"],
+    linkstatic = False,
+    deps = [
+        "@rules_python//python/cc:current_py_cc_headers",
+        "@rules_python//python/cc:current_py_cc_libs",
+    ],
+)
+
+cc_library(
+    name = "libecho_hdrs",
+    hdrs = ["echo.h"],
+    deps = ["@rules_python//python/cc:current_py_cc_headers"],
+)
+
+cc_shared_library(
+    name = "libecho_solib",
+    shared_lib_name = "libecho.so",
+    visibility = ["//echo:__pkg__"],
+    deps = ["libecho"],
+)
+
+# Create a python extension that requires libecho.so at runtime.
+cc_library(
+    name = "foo_ext",
+    srcs = [
+        "foo.cpp",
+    ],
+    deps = [
+        "libecho_hdrs",
+        "@rules_python//python/cc:current_py_cc_headers",
+        "@rules_python//python/cc:current_py_cc_libs",
+    ],
+)
+
+# Shared library python extension with a dymanic link to libecho.so.
+cc_shared_library(
+    name = "foo_solib",
+    dynamic_deps = ["libecho_solib"],
+    shared_lib_name = "foo.so",
+    visibility = ["//foo:__pkg__"],
+    deps = ["foo_ext"],
+)
+
+# Python Library wrapper around "foo.so" for the direct test below.
+py_library(
+    name = "foo_pylib",
+    data = ["foo_solib"],
+    imports = ["."],
+)
+
+py_test(
+    name = "test",
+    srcs = ["test.py"],
+    deps = ["foo_pylib"],
+)

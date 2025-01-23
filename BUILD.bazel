@@ -1,10 +1,87 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load("//py:defs.bzl", "py_test")
+
+#-----------------------------------------------------------------
+# 1. Create a py_library from foo.so and the cc_library for libecho.so
+
+py_test(
+    name = "foo_cc_library_dep_test",
+    srcs = ["test.py"],
+    main = "test.py",
+    tags = ["manual"],
+    deps = ["//foo:foo_py_library_using_cc_library_dep"],
 )
 
-sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+py_test(
+    name = "foo_cc_library_dep_test_LD_LIBRARY_PATH",
+    srcs = ["test.py"],
+    env = {"LD_LIBRARY_PATH": "./_solib_k8/_U_S_Secho_Clibecho_Ucc_Ulibrary_Uimported___Uecho"},
+    main = "test.py",
+    deps = ["//foo:foo_py_library_using_cc_library_dep"],
+)
+
+#-----------------------------------------------------------------
+# 2. Create a py_library from foo.so and the cc_library for libecho.so
+
+py_test(
+    name = "foo_py_library_dep_test",
+    srcs = ["test.py"],
+    main = "test.py",
+    tags = ["manual"],
+    deps = ["//foo:foo_py_library_using_py_library_dep"],
+)
+
+py_test(
+    name = "foo_py_library_dep_test_LD_LIBRARY_PATH",
+    srcs = ["test.py"],
+    env = {"LD_LIBRARY_PATH": "./echo"},
+    main = "test.py",
+    deps = ["//foo:foo_py_library_using_py_library_dep"],
+)
+
+#-----------------------------------------------------------------
+# 3. Create a py_library from foo.so and libecho.so files directly
+py_test(
+    name = "foo_py_library_direct_test",
+    srcs = ["test.py"],
+    main = "test.py",
+    tags = ["manual"],
+    deps = ["//foo:foo_py_library_direct"],
+)
+
+py_test(
+    name = "foo_py_library_direct_test_LD_LIBRARY_PATH",
+    srcs = ["test.py"],
+    env = {"LD_LIBRARY_PATH": "./echo"},
+    main = "test.py",
+    deps = ["//foo:foo_py_library_direct"],
+)
+
+#-----------------------------------------------------------------
+# 4. Use cc_import() to bring in both foo.so and libecho.so
+
+py_test(
+    name = "foo_cc_import_dep_test",
+    srcs = ["test.py"],
+    main = "test.py",
+    tags = ["manual"],
+    deps = ["//foo:foo_py_library_using_cc_import"],
+)
+
+#-----------------------------------------------------------------
+# 5. Use filegroup() to bring in both foo.so and libecho.so
+
+py_test(
+    name = "foo_py_library_using_filegroup_test",
+    srcs = ["test.py"],
+    main = "test.py",
+    tags = ["manual"],
+    deps = ["//foo:foo_py_library_using_filegroup"],
+)
+
+py_test(
+    name = "foo_py_library_using_filegroup_test_LD_LIBRARY_PATH",
+    srcs = ["test.py"],
+    env = {"LD_LIBRARY_PATH": "./echo"},
+    main = "test.py",
+    deps = ["//foo:foo_py_library_using_filegroup"],
 )

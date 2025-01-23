@@ -1,1 +1,3 @@
 common --lockfile_mode=off
+common --announce_rc
+test --test_output=errors
