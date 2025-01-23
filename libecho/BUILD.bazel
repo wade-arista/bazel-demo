@@ -1,0 +1,14 @@
+load("//:helpers.bzl", "make_lib")
+
+# Strips the RUNPATH and creates a local file "libecho.so".
+make_lib(
+    name = "libecho_imported_so_file",
+    src = "//extension:libecho_solib",
+    out = "libecho.so",
+)
+
+cc_library(
+    name = "libecho",
+    srcs = ["libecho.so"],
+    visibility = ["//visibility:public"],
+)

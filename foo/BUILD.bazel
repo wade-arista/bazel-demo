@@ -1,92 +1,16 @@
 load("//:helpers.bzl", "make_lib")
-load("//py:defs.bzl", "bazel_py_library", "py_library")
 
-package(default_visibility = ["//visibility:public"])
-
+# Strips the RUNPATH and creates a local file "foo.so".
 make_lib(
     name = "foo_imported_so_file",
     src = "//extension:foo_solib",
     out = "foo.so",
 )
 
-#-----------------------------------------------------------------
-# 1. Create a py_library from foo.so and the cc_library for libecho.so
-
 py_library(
-    name = "foo_py_library_using_cc_library_dep",
-    data = [
-        "foo.so",
-        "//echo:libecho_cc_library_imported",
-    ],
+    name = "foo",
+    data = ["foo.so"],
     imports = ["."],
-)
-
-#-----------------------------------------------------------------
-# 2. Create a py_library from foo.so and the cc_library for libecho.so
-
-py_library(
-    name = "foo_py_library_using_py_library_dep",
-    data = [
-        "foo.so",
-        "//echo:libecho_py_library_imported",
-    ],
-    imports = ["."],
-)
-
-#-----------------------------------------------------------------
-# 3. Create a py_library from foo.so and libecho.so files directly
-
-py_library(
-    name = "foo_py_library_direct",
-    data = [
-        "foo.so",
-        "//echo:libecho.so",
-    ],
-    imports = ["."],
-)
-
-#-----------------------------------------------------------------
-# 4. Use cc_import() to bring in both foo.so and libecho.so
-
-cc_import(
-    name = "foo_cc_import",
-    shared_library = "foo.so",
-    deps = ["//echo:libecho_cc_import"],
-)
-
-bazel_py_library(
-    name = "foo_py_library_using_cc_import",
-    data = ["foo_cc_import"],
-    imports = ["."],
-    deps = ["foo_cc_import"],
-)
-
-#-----------------------------------------------------------------
-# 5. Use filegroup() to bring in both foo.so and libecho.so
-
-filegroup(
-    name = "foo_and_deps_filegroup",
-    srcs = [
-        "foo.so",
-        "//echo:libecho.so",
-    ],
-    data = [
-        "foo.so",
-        "//echo:libecho.so",
-    ],
-)
-
-py_library(
-    name = "foo_py_library_using_filegroup",
-    data = ["foo_and_deps_filegroup"],
-    imports = ["."],
-)
-
-#-----------------------------------------------------------------
-# Used by the cc/ tests for a comparison of behaviour
-
-cc_library(
-    name = "foo_cc_library_imported",
-    srcs = ["foo.so"],
-    deps = ["//echo:libecho_cc_library_imported"],
+    visibility = ["//visibility:public"],
+    deps = ["//libecho"],
 )

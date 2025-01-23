@@ -1,5 +1,3 @@
-load("//py:defs.bzl", "py_library", "py_test")
-
 cc_library(
     name = "libecho",
     srcs = ["echo.cpp"],
@@ -20,7 +18,7 @@ cc_library(
 cc_shared_library(
     name = "libecho_solib",
     shared_lib_name = "libecho.so",
-    visibility = ["//echo:__pkg__"],
+    visibility = ["//libecho:__pkg__"],
     deps = ["libecho"],
 )
 
@@ -44,17 +42,4 @@ cc_shared_library(
     shared_lib_name = "foo.so",
     visibility = ["//foo:__pkg__"],
     deps = ["foo_ext"],
-)
-
-# Python Library wrapper around "foo.so" for the direct test below.
-py_library(
-    name = "foo_pylib",
-    data = ["foo_solib"],
-    imports = ["."],
-)
-
-py_test(
-    name = "test",
-    srcs = ["test.py"],
-    deps = ["foo_pylib"],
 )
