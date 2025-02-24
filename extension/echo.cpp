@@ -3,7 +3,7 @@
 
 int
 echo_helper_function() {
-   return 42;
+   return 0;
 }
 
 PyObject *
@@ -12,6 +12,6 @@ foo_echo(PyObject *self, PyObject *args) {
 
     if (!PyArg_ParseTuple(args, "i", &input))
         return NULL;
-    return PyLong_FromLong(input);
+    return PyLong_FromLong(input + echo_helper_function());
 }
 

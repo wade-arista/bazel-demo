@@ -7,10 +7,18 @@ make_lib(
     out = "foo.so",
 )
 
+cc_library(
+    name = "foo_so",
+    srcs = ["foo.so"],
+    visibility = ["//visibility:public"],
+)
+
 py_library(
     name = "foo",
-    data = ["foo.so"],
     imports = ["."],
     visibility = ["//visibility:public"],
-    deps = ["//libecho"],
+    deps = [
+        "foo_so",
+        "//libecho",
+    ],
 )

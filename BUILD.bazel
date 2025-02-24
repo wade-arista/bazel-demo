@@ -1,8 +1,19 @@
 load("@rules_python//python:defs.bzl", "py_test")
+load("//path:path.bzl", "lib_path")
+
+lib_path(
+    name = "import_foo_test_lib_path",
+    deps = ["//foo"],
+)
 
 py_test(
     name = "import_foo_test",
     srcs = ["test.py"],
+    data = ["import_foo_test_lib_path"],
+    env = {
+        "LD_LIBRARY_PATH": "$(location import_foo_test_lib_path)",
+        "PYTHONPATH": "$(location import_foo_test_lib_path)",
+    },
     main = "test.py",
     deps = ["//foo"],
 )
