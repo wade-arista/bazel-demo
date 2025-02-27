@@ -39,8 +39,15 @@ cc_test(
 )
 
 #---------------------------------
-# broken test case with shared lib
+# test case with shared lib
 #---------------------------------
+
+cc_library(
+    name = "user_headers",
+    hdrs = ["user.h"],
+    linkstatic = False,
+)
+
 cc_shared_library(
     name = "user_solib",
     deps = ["user"],
@@ -51,5 +58,5 @@ cc_test(
     srcs = ["user_test.cc"],
     dynamic_deps = ["user_solib"],
     linkstatic = False,
-    tags = ["manual"],
+    deps = ["user_headers"],
 )
