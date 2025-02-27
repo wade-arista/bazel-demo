@@ -20,3 +20,20 @@ cc_test(
     linkstatic = False,
     deps = ["helper"],
 )
+
+#------------------------------
+
+cc_library(
+    name = "user",
+    srcs = ["user.cc"],
+    hdrs = ["user.h"],
+    linkstatic = False,
+    deps = ["helper"],
+)
+
+cc_test(
+    name = "user_test",
+    srcs = ["user_test.cc"],
+    linkstatic = False,
+    deps = ["user"],
+)
