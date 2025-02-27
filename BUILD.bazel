@@ -37,3 +37,19 @@ cc_test(
     linkstatic = False,
     deps = ["user"],
 )
+
+#---------------------------------
+# broken test case with shared lib
+#---------------------------------
+cc_shared_library(
+    name = "user_solib",
+    deps = ["user"],
+)
+
+cc_test(
+    name = "user_solib_test",
+    srcs = ["user_test.cc"],
+    dynamic_deps = ["user_solib"],
+    linkstatic = False,
+    tags = ["manual"],
+)
