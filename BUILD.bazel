@@ -1,10 +1,62 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+cc_library(
+    name = "mylib",
+    srcs = ["mylib.cc"],
+    hdrs = ["mylib.h"],
+    linkstatic = False,
 )
 
-sh_test(
+cc_library(
+    name = "helper",
+    hdrs = ["helper.h"],
+    linkstatic = False,
+    deps = ["mylib"],
+)
+
+cc_test(
     name = "test",
-    srcs = ["test.sh"],
+    srcs = ["test.cc"],
+    linkstatic = False,
+    deps = ["helper"],
+)
+
+#------------------------------
+
+cc_library(
+    name = "user",
+    srcs = ["user.cc"],
+    hdrs = ["user.h"],
+    linkstatic = False,
+    deps = ["helper"],
+)
+
+cc_test(
+    name = "user_test",
+    srcs = ["user_test.cc"],
+    linkstatic = False,
+    deps = ["user"],
+)
+
+#---------------------------------
+# test case with shared lib
+#---------------------------------
+
+cc_library(
+    name = "user_headers",
+    hdrs = ["user.h"],
+    linkstatic = False,
+)
+
+cc_shared_library(
+    name = "user_solib",
+    deps = ["user"],
+)
+
+cc_test(
+    name = "user_solib_test",
+    srcs = ["user_test.cc"],
+    dynamic_deps = ["user_solib"],
+    linkstatic = False,
+    deps = ["user_headers"],
 )
