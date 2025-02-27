@@ -1,10 +1,22 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+cc_library(
+    name = "mylib",
+    srcs = ["mylib.cc"],
+    hdrs = ["mylib.h"],
+    linkstatic = False,
 )
 
-sh_test(
+cc_library(
+    name = "helper",
+    hdrs = ["helper.h"],
+    linkstatic = False,
+    deps = ["mylib"],
+)
+
+cc_test(
     name = "test",
-    srcs = ["test.sh"],
+    srcs = ["test.cc"],
+    linkstatic = False,
+    deps = ["helper"],
 )
