@@ -22,3 +22,25 @@ py_library(
         "//libecho",
     ],
 )
+
+cc_library(
+    name = "bar_lib",
+    srcs = ["bar.cpp"],
+)
+
+cc_shared_library(
+    name = "bar_solib",
+    deps = ["bar_lib"],
+)
+
+make_lib(
+    name = "bar_import",
+    src = "bar_solib",
+    out = "bar.so",
+)
+
+cc_library(
+    name = "bar_so",
+    srcs = ["bar.so"],
+    visibility = ["//visibility:public"],
+)

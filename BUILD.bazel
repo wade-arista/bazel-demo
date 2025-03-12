@@ -17,3 +17,18 @@ py_test(
     main = "test.py",
     deps = ["//foo"],
 )
+
+lib_path(
+    name = "bar_path",
+    deps = ["//foo:bar_so"],
+)
+
+cc_test(
+    name = "dlopen_test",
+    srcs = ["dlopen_test.cc"],
+    data = ["bar_path"],
+    env = {
+        # "LD_DEBUG": "libs",
+        "LD_LIBRARY_PATH": "$(location bar_path)",
+    },
+)

@@ -27,7 +27,14 @@ def _lib_path_impl(ctx):
     links = []
     for d in ctx.attr.deps:
         for li in d[LibsInfo].files.to_list():
-            for lib in li.libraries:
+            if hasattr(li, "libraries"):
+                libs = li.libraries
+            else:
+                libs = []
+                for i in li.to_list():
+                    libs += i.libraries
+
+            for lib in libs:
                 dl = lib.dynamic_library
                 if not dl:
                     fail("missing dynamic_library in", lib)
