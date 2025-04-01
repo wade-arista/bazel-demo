@@ -1,10 +1,22 @@
+load("defs.bzl", "symlink_directory")
+
 genrule(
     name = "test_sh",
     outs = ["test.sh"],
     cmd = "touch $@",
 )
 
+symlink_directory(
+    name = "links",
+    srcs = [
+        "other.txt",
+        "test_sh",
+    ],
+)
+
 sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+    name = "check",
+    srcs = ["check.sh"],
+    args = ["$(location links)"],
+    data = ["links"],
 )
