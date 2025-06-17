@@ -1,10 +1,30 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+cc_library(
+    name = "lib1",
+    srcs = ["lib1.cc"],
+    hdrs = ["lib1.h"],
+    linkstatic = False,
+)
+
+cc_library(
+    name = "lib2",
+    srcs = ["lib2.cc"],
+    hdrs = ["lib2.h"],
+    linkstatic = False,
+    deps = ["lib1"],
+)
+
+cc_test(
+    name = "test",
+    srcs = ["main.cc"],
+    linkstatic = False,
+    deps = ["lib2"],
 )
 
 sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+    name = "assert_linking",
+    srcs = ["assert_linking.sh"],
+    args = ["$(location test)"],
+    data = ["test"],
 )
+
+test_suite(name = "check")

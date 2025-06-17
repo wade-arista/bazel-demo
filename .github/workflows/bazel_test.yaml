@@ -29,4 +29,4 @@ jobs:
 
       - name: bazelisk test
         run: |
-          bazelisk test --test_output=all ...
+          bazelisk test --test_output=all check
