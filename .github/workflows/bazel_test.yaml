@@ -22,11 +22,27 @@ jobs:
         with:
           # Avoid downloading Bazel every time.
           bazelisk-cache: true
-          # Store build cache per workflow.
-          disk-cache: ${{ github.workflow }}
+          # # Store build cache per workflow.
+          # disk-cache: false
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: bazelisk test
+      - name: test_pass
         run: |
-          bazelisk test --test_output=all ...
+          bazelisk clean --async
+          bazelisk test test_pass --config=bug
+
+      - name: test_pass (non-hermetic)
+        run: |
+          bazelisk clean --async
+          bazelisk test test_pass
+
+      - name: test_fail
+        run: |
+          bazelisk clean --async
+          ! bazelisk test test_fail --config=bug
+
+      - name: test_fail (non-hermetic)
+        run: |
+          bazelisk clean --async
+          ! bazelisk test test_fail

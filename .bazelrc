@@ -1,1 +1,13 @@
 common --lockfile_mode=off
+common --announce_rc
+common -s --sandbox_debug
+common --test_output=all
+
+common:bug --incompatible_strict_action_env
+common:bug --sandbox_add_mount_pair /bin
+common:bug --sandbox_add_mount_pair /lib64
+common:bug --sandbox_add_mount_pair /lib
+common:bug --sandbox_add_mount_pair /usr
+common:bug --sandbox_add_mount_pair /etc
+common:bug --sandbox_add_mount_pair /proc
+common:bug --experimental_use_hermetic_linux_sandbox
