@@ -29,20 +29,24 @@ jobs:
 
       - name: test_pass
         run: |
-          bazelisk clean --async
-          bazelisk test test_pass --config=bug
-
-      - name: test_pass (non-hermetic)
-        run: |
+          findmnt
           bazelisk clean --async
           bazelisk test test_pass
 
+      - name: test_pass hermetic
+        run: |
+          findmnt
+          bazelisk clean --async
+          bazelisk test test_pass --config=bug
+
       - name: test_fail
         run: |
-          bazelisk clean --async
-          ! bazelisk test test_fail --config=bug
-
-      - name: test_fail (non-hermetic)
-        run: |
+          findmnt
           bazelisk clean --async
           ! bazelisk test test_fail
+
+      - name: test_fail hermetic
+        run: |
+          findmnt
+          bazelisk clean --async
+          ! bazelisk test test_fail --config=bug
