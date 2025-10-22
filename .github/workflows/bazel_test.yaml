@@ -29,4 +29,8 @@ jobs:
 
       - name: bazelisk test
         run: |
-          bazelisk test --test_output=all ...
+          MY_ENV=1 bazelisk test --test_output=all ...
+
+      - name: bazelisk test xfail
+        run: |
+          MY_ENV=2 bazelisk test --test_output=all ... && exit 1 || exit 0

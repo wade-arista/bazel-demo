@@ -1,10 +1,70 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
+load("rules.bzl", "my_action")
+
+my_action(
+    name = "get_vars_shell_env",
+    envs = [
+        "MY_ENV",
+        "OTHER_ENV",
+        "HIDDEN_ENV",
+    ],
+    use_default_shell_env = True,
+)
+
+write_file(
+    name = "expect_get_vars_shell_env",
+    out = "expect_get_vars_shell_env.txt",
+    content = [
+        "vars: MY_ENV OTHER_ENV HIDDEN_ENV",
+        "MY_ENV=1",
+        "OTHER_ENV=3",
+        "HIDDEN_ENV=<UNSET>",
+    ],
 )
 
 sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+    name = "test_vars",
+    srcs = ["validate.sh"],
+    data = [
+        "expect_get_vars_shell_env",
+        "get_vars_shell_env",
+    ],
+    env = {
+        "INPUT_FILE": "$(location get_vars_shell_env)",
+        "EXPECT_FILE": "$(location expect_get_vars_shell_env)",
+    },
+)
+
+my_action(
+    name = "get_vars_shell_no_env",
+    envs = [
+        "MY_ENV",
+        "OTHER_ENV",
+        "HIDDEN_ENV",
+    ],
+    use_default_shell_env = False,
+)
+
+write_file(
+    name = "expect_get_vars_shell_no_env",
+    out = "expect_get_vars_shell_no_env.txt",
+    content = [
+        "vars: MY_ENV OTHER_ENV HIDDEN_ENV",
+        "MY_ENV=<UNSET>",
+        "OTHER_ENV=3",
+        "HIDDEN_ENV=<UNSET>",
+    ],
+)
+
+sh_test(
+    name = "test_vars_no_env",
+    srcs = ["validate.sh"],
+    data = [
+        "expect_get_vars_shell_no_env",
+        "get_vars_shell_no_env",
+    ],
+    env = {
+        "INPUT_FILE": "$(location get_vars_shell_no_env)",
+        "EXPECT_FILE": "$(location expect_get_vars_shell_no_env)",
+    },
 )

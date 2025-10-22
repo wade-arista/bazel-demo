@@ -1,1 +1,6 @@
+common --announce_rc
 common --lockfile_mode=off
+common --action_env=MY_ENV
+common --action_env=IGNORE_ENV=1
+common --host_action_env=MY_ENV
+common --host_action_env=IGNORE_ENV=1
