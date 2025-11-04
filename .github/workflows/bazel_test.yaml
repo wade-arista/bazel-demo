@@ -34,3 +34,7 @@ jobs:
       - name: bazelisk test xfail
         run: |
           MY_ENV=2 bazelisk test --test_output=all ... && exit 1 || exit 0
+
+      - name: test aquery behaviour
+        run: |
+          ./test-aquery.sh
