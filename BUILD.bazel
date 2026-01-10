@@ -1,10 +1,29 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load(":test_with_modes.bzl", "cc_dbg_test", "cc_opt_test")
+
+cc_library(
+    name = "one",
+    srcs = ["one.cpp"],
+    hdrs = ["one.h"],
+    linkstatic = False,
 )
 
-sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+cc_library(
+    name = "two",
+    srcs = ["two.cpp"],
+    hdrs = ["two.h"],
+    data = ["one"],
+    linkstatic = False,
 )
+
+[rule(
+    name = "foo" + suffix,
+    srcs = ["footest.cpp"],
+    deps = [
+        "two",
+        "@bazel_tools//tools/cpp/runfiles",
+    ],
+) for (rule, suffix) in (
+    (cc_test, ""),
+    (cc_dbg_test, "_dbg"),
+    (cc_opt_test, "_opt"),
+)]
