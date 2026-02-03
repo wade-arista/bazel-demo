@@ -1,0 +1,43 @@
+diff --git a/cc/common/cc_helper_internal.bzl b/cc/common/cc_helper_internal.bzl
+index a7373aac4..320954b4e 100644
+--- a/cc/common/cc_helper_internal.bzl
++++ b/cc/common/cc_helper_internal.bzl
+@@ -373,8 +373,15 @@ def root_relative_path(file):
+     Returns:
+         (str) The root-relative path of the file.
+     """
++
++    # This function matches Bazel's Artifact.getRootRelativePath() implementation bug-for-bug,
++    # including the surprising behavior that the result starts with "external/<repo>/" for external
++    # source files, but not for external generated files.
+     if not file.is_source:
++        # https://github.com/bazelbuild/bazel/blob/795af54db5c348af5ca8b2961a982b399206ea20/src/main/java/com/google/devtools/build/lib/actions/Artifact.java#L310
+         return file.path[len(file.root.path) + 1:]
++
++    # https://github.com/bazelbuild/bazel/blob/795af54db5c348af5ca8b2961a982b399206ea20/src/main/java/com/google/devtools/build/lib/actions/Artifact.java#L786
+     short_path = file.short_path
+     if not short_path.startswith("../"):
+         return short_path
+diff --git a/cc/private/link/cpp_link_action.bzl b/cc/private/link/cpp_link_action.bzl
+index 764c626df..f60376c56 100644
+--- a/cc/private/link/cpp_link_action.bzl
++++ b/cc/private/link/cpp_link_action.bzl
+@@ -14,7 +14,7 @@
+ """Functions that create C++ link action."""
+
+ load("@bazel_skylib//lib:paths.bzl", "paths")
+-load("//cc/common:cc_helper_internal.bzl", artifact_category = "artifact_category_names")
++load("//cc/common:cc_helper_internal.bzl", "root_relative_path", artifact_category = "artifact_category_names")
+ load("//cc/private:cc_internal.bzl", _cc_internal = "cc_internal")
+ load("//cc/private/link:finalize_link_action.bzl", "finalize_link_action")
+ load("//cc/private/link:link_build_variables.bzl", "setup_linking_variables")
+@@ -192,7 +192,8 @@ def link_action(
+         output,
+         _cc_internal.dynamic_library_soname(
+             actions,
+-            output.short_path,
++            # Must match https://github.com/bazelbuild/bazel/blob/795af54db5c348af5ca8b2961a982b399206ea20/src/main/java/com/google/devtools/build/lib/rules/cpp/SolibSymlinkAction.java#L169.
++            root_relative_path(output),
+             link_type != LINK_TARGET_TYPE.NODEPS_DYNAMIC_LIBRARY,
+         ),
+         interface_output,
