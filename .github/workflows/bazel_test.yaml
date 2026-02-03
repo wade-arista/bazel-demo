@@ -8,25 +8,28 @@ on:
 jobs:
   bazel-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        USE_BAZEL_VERSION: [9.0.0, 8.5.1]
+        FEATURES: ["", "--features=set_soname"]
+    env:
+      USE_BAZEL_VERSION: ${{ matrix.USE_BAZEL_VERSION }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+      - uses: awalsh128/cache-apt-pkgs-action@v1.6.0
         with:
-          packages: chrpath
-          version: 1.0
+          packages: binutils
 
       - name: Setup Bazel
-        uses: bazel-contrib/setup-bazel@0.12.1
+        uses: bazel-contrib/setup-bazel@0.18.0
         with:
           # Avoid downloading Bazel every time.
           bazelisk-cache: true
-          # Store build cache per workflow.
-          disk-cache: ${{ github.workflow }}
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: bazelisk test
+      - name: test (Bazel ${{ matrix.USE_BAZEL_VERSION }} ${{ matrix.FEATURES }})
         run: |
-          bazelisk test --test_output=all ...
+          ./test.sh ${{ matrix.FEATURES }}
