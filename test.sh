@@ -21,5 +21,5 @@ SUBDIR_LINK=$(rlocation "$2")
 echo "subdir" "$SUBDIR"
 echo "subdir_link" "$SUBDIR_LINK"
 
-cat "$SUBDIR/testfile" | grep "PASS"
-cat "$SUBDIR_LINK/testfile" | grep "PASS"
+cat "$SUBDIR/testfile" | grep "Test2"
+cat "$SUBDIR_LINK/testfile" | grep "Test2"

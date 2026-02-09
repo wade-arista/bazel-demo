@@ -4,7 +4,10 @@ load("defs.bzl", "symlink_dir")
 
 filegroup(
     name = "subdir",
-    srcs = glob(["subdir/*"]),
+    srcs = glob([
+        "subdir/*",
+        "testfile",
+    ]),
 )
 
 symlink_dir(
@@ -19,10 +22,11 @@ sh_binary(
     ],
     data = [
         ":subdir",
+        ":subdir/testfile",
         ":subdir_link",
     ],
     args = [
-        "$(rlocationpath :subdir)",
+        "$(rlocationpath :subdir/testfile)",
         "$(rlocationpath :subdir_link)"
     ]
 )
@@ -35,10 +39,11 @@ sh_test(
     ],
     data = [
         ":subdir",
+        ":subdir/testfile",
         ":subdir_link",
     ],
     args = [
-        "$(rlocationpath :subdir)",
+        "$(rlocationpath :subdir/testfile",
         "$(rlocationpath :subdir_link)"
     ]
 )
