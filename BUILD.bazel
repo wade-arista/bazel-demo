@@ -1,10 +1,44 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("defs.bzl", "symlink_dir")
+
+filegroup(
+    name = "subdir",
+    srcs = glob(["subdir/*"]),
+)
+
+symlink_dir(
+    name = "subdir_link",
+    target = ":subdir",
+)
+sh_binary(
+    name = "test",
+    srcs = ["test.sh"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+    data = [
+        ":subdir",
+        ":subdir_link",
+    ],
+    args = [
+        "$(rlocationpath :subdir)",
+        "$(rlocationpath :subdir_link)"
+    ]
 )
 
 sh_test(
-    name = "test",
+    name = "test_wrapper",
     srcs = ["test.sh"],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+    data = [
+        ":subdir",
+        ":subdir_link",
+    ],
+    args = [
+        "$(rlocationpath :subdir)",
+        "$(rlocationpath :subdir_link)"
+    ]
 )
