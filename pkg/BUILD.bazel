@@ -1,0 +1,33 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("defs.bzl", "symlink_dir")
+
+# Source files in a directory
+filegroup(
+    name = "subdir",
+    srcs = glob(["subdir/*"]),
+)
+
+# Create a symlink to the directory using ctx.actions.symlink(target_path=...)
+# This is where the bug manifests - rlocation cannot resolve this symlink
+symlink_dir(
+    name = "subdir_link",
+    target = ":subdir",
+)
+
+# Test binary that tries to use rlocation on the symlink
+sh_binary(
+    name = "test",
+    srcs = ["test.sh"],
+    args = [
+        "$(rlocationpath subdir/testfile)",
+        "$(rlocationpath :subdir_link)",
+    ],
+    data = [
+        ":subdir",
+        ":subdir_link",
+        "subdir/testfile",
+    ],
+    deps = [
+        "@bazel_tools//tools/bash/runfiles",
+    ],
+)
