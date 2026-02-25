@@ -1,1 +1,17 @@
 module(name = "demo")
+
+bazel_dep(name = "rules_pkg")
+local_path_override(
+    module_name = "rules_pkg",
+    path = "/home/wade/src/github.com/bazelbuild/rules_pkg",
+)
+
+find_rpmbuild = use_extension(
+    "@rules_pkg//toolchains/rpm:rpmbuild_configure.bzl",
+    "find_system_rpmbuild_bzlmod",
+)
+use_repo(find_rpmbuild, "rules_pkg_rpmbuild")
+
+register_toolchains(
+    "@rules_pkg_rpmbuild//:all",
+)

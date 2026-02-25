@@ -1,10 +1,21 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
+load("@rules_pkg//pkg:rpm.bzl", "pkg_rpm")
+
+pkg_files(
+    name = "demo_files",
+    srcs = [
+        "data.txt",
+    ],
 )
 
-sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+pkg_rpm(
+    name = "demo-rpm",
+    srcs = [":demo_files"],
+    architecture = "noarch",
+    description = "Bazel demo RPM package.",
+    license = "MIT",
+    release = "{RPM_RELEASE}",
+    stamp = 1,
+    summary = "Bazel demo RPM",
+    version = "1.0.0",
 )

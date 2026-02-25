@@ -1,1 +1,3 @@
 common --lockfile_mode=off
+common --workspace_status_command=tools/workspace_status.sh
+common --experimental_remote_scrubbing_config=tools/scrubbing.cfg
