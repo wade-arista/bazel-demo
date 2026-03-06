@@ -1,10 +1,5 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
-)
+load("//:status_check.bzl", "status_check")
 
-sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+status_check(
+    name = "status_check",
 )

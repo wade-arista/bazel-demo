@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "STABLE_FIRST_NO_VALUE "
+echo "STABLE_WITH_VALUE hi"
+echo "STABLE_SECOND_NO_VALUE "
+echo "STABLE_THIRD_NO_VALUE "

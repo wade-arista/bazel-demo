@@ -8,6 +8,11 @@ on:
 jobs:
   bazel-test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        STATUS_CMD: ["status_ok.sh", "status_bad.sh"]
+        USE_BAZEL_VERSION: ["7.x", "8.x", "9.x", "", "last_green"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +32,7 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: bazelisk test
+      - name: USE_BAZEL_VERSION=${{ matrix.USE_BAZEL_VERSION }} bazelisk test ${{ matrix.STATUS_CMD }}
         run: |
-          bazelisk test --test_output=all ...
+          USE_BAZEL_VERSION=${{ matrix.USE_BAZEL_VERSION }} \
+            bazelisk build --workspace_status_command=tools/${{ matrix.STATUS_CMD }} status_check && cat bazel-bin/status_check.txt
