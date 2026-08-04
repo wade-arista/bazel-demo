@@ -1,10 +1,6 @@
-genrule(
-    name = "test_sh",
-    outs = ["test.sh"],
-    cmd = "touch $@",
-)
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 sh_test(
-    name = "test",
-    srcs = ["test.sh"],
+    name = "timeout_test",
+    srcs = ["timeout_test.sh"],
 )
