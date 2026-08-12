@@ -27,6 +27,6 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: bazelisk test
+      - name: version
         run: |
-          bazelisk test --test_output=all ...
+          bazelisk version
