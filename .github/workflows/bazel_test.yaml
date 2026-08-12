@@ -30,3 +30,13 @@ jobs:
       - name: version
         run: |
           bazelisk version
+
+      - name: compatible suite
+        run: |
+          bazelisk build --noexpand_test_suites --aspects=//:repro.bzl%manifest_aspect --output_groups=repro //:compatible_suite
+          test -f bazel-bin/compatible_suite.aspect.txt
+
+      - name: mixed suite
+        run: |
+          bazelisk build --noexpand_test_suites --aspects=//:repro.bzl%manifest_aspect --output_groups=repro //:mixed_suite
+          test -f bazel-bin/mixed_suite.aspect.txt

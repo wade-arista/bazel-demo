@@ -1,0 +1,23 @@
+load(":repro.bzl", "demo_test")
+
+demo_test(
+    name = "compatible_test",
+)
+
+demo_test(
+    name = "incompatible_test",
+    target_compatible_with = ["@platforms//:incompatible"],
+)
+
+test_suite(
+    name = "compatible_suite",
+    tests = [":compatible_test"],
+)
+
+test_suite(
+    name = "mixed_suite",
+    tests = [
+        ":compatible_test",
+        ":incompatible_test",
+    ],
+)
