@@ -1,0 +1,6 @@
+genrule(
+    name = "tmpfs_probe",
+    srcs = ["tmpfs_probe.sh"],
+    outs = ["tmpfs_probe.txt"],
+    cmd = '$(location tmpfs_probe.sh) > "$@"',
+)

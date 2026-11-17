@@ -1,1 +1,11 @@
+common --noshow_progress
+common --noshow_loading_progress
+common --ui_event_filters=-info
 common --lockfile_mode=off
+common --experimental_use_hermetic_linux_sandbox
+common --spawn_strategy=linux-sandbox
+common --sandbox_add_mount_pair=/bin
+common --sandbox_add_mount_pair=/usr
+common --sandbox_add_mount_pair=/lib
+common --sandbox_add_mount_pair=/lib64
+common --sandbox_add_mount_pair=/etc

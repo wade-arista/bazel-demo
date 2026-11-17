@@ -27,6 +27,12 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
 
-      - name: version
+      - name: Enable Linux sandbox user namespaces
         run: |
-          bazelisk version
+          # Ubuntu's AppArmor restriction prevents Bazel from creating user namespaces.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          unshare --user --map-root-user true
+
+      - name: repro
+        run: |
+            ./reproduce_tmpfs.sh
